@@ -1,13 +1,3 @@
-"""
-core/data.py
-------------
-Caricamento di photos.csv e queries.csv.
-
-photos.csv : ogni riga è un vettore embedding (float separati da virgola).
-             L'id della foto corrisponde al numero di riga (1-indexed).
-queries.csv: ogni riga è una lista di id di foto restituite da una query.
-"""
-
 import numpy as np
 from pathlib import Path
 
