@@ -57,19 +57,7 @@ def run(photos: np.ndarray, queries: list,
         budget: int = 3,
         max_q: Optional[int] = None,
         sim: Optional[np.ndarray] = None) -> dict:
-    """
-    Parameters
-    ----------
-    photos : matrice (N, D)
-    queries: lista di query
-    budget : numero di foto da tenere (default 3 come da consegna)
-    max_q  : limita il numero di query nel calcolo esatto
-    sim    : matrice di similarità precalcolata (opzionale)
 
-    Returns
-    -------
-    dict con 'kept', 'deleted', 'phi', 'set_value'
-    """
     N = photos.shape[0]
     print(f"[C] N={N}, seleziono top-{budget} per valore di Shapley")
 
