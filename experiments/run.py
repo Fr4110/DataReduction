@@ -1,12 +1,3 @@
-"""
-experiments/run.py
-------------------
-Esegue i quattro metodi e produce grafici e tabelle.
-
-USO:
-    python experiments/run.py [--skip-a] [--budget-fraction 0.05]
-"""
-
 import sys
 import time
 import argparse
@@ -123,7 +114,6 @@ def _save_plots(results, N):
     times  = [results[m]["time"]    for m in methods_with_u]
     n_kept = [results[m]["n_kept"]  for m in methods_with_u]
 
-    # Utility bar chart
     fig, ax = plt.subplots(figsize=(7, 4))
     bars = ax.bar(methods_with_u, utils,
                   color=[COLORS[m] for m in methods_with_u],
@@ -140,7 +130,6 @@ def _save_plots(results, N):
     plt.savefig(OUT / "utility.png", dpi=150)
     plt.close()
 
-    # Runtime bar chart
     methods_with_t = [m for m in "ABCD" if results[m]["time"] is not None]
     fig, ax = plt.subplots(figsize=(7, 4))
     ax.bar(methods_with_t,
@@ -155,7 +144,6 @@ def _save_plots(results, N):
     plt.savefig(OUT / "runtime.png", dpi=150)
     plt.close()
 
-    # Trade-off scatter
     fig, ax = plt.subplots(figsize=(7, 4))
     for m in methods_with_u:
         ax.scatter(results[m]["n_kept"], results[m]["utility"],
@@ -170,7 +158,6 @@ def _save_plots(results, N):
     plt.savefig(OUT / "tradeoff.png", dpi=150)
     plt.close()
 
-    # Score distribution B
     if "scores" in results["B"]:
         fig, ax = plt.subplots(figsize=(7, 4))
         ax.hist(results["B"]["scores"], bins=50,
