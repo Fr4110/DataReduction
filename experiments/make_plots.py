@@ -1,14 +1,3 @@
-"""
-make_plots.py
--------------
-Rigenera i grafici del report con stile publication-quality.
-
-USO (con i file reali in data/):
-    python make_plots.py
-
-I PNG vengono salvati in experiments/output/
-"""
-
 import sys
 import numpy as np
 import matplotlib
@@ -27,7 +16,6 @@ from algorithms.ewc import _compute_scores as ewc_scores
 OUT = ROOT / "experiments" / "output"
 OUT.mkdir(exist_ok=True)
 
-# ── stile globale ────────────────────────────────────────────────
 plt.rcParams.update({
     "font.family":      "serif",
     "font.size":        11,
@@ -54,14 +42,12 @@ def load_real():
     return photos, queries
 
 
-# ── 1. Score distribution B (reale) ─────────────────────────────
 def plot_score_dist(photos, queries):
     scores = score_photos(photos, queries)
 
     fig, ax = plt.subplots(figsize=(7, 4))
     ax.hist(scores, bins=60, color=CB, edgecolor="none", alpha=0.85)
 
-    # evidenzia la soglia tra foto inattive e attive
     ax.axvline(x=0, color="black", linewidth=0.8, linestyle=":")
     ax.annotate("30,683 photos\nnever queried",
                 xy=(0, ax.get_ylim()[1]*0.9),
@@ -78,7 +64,6 @@ def plot_score_dist(photos, queries):
     print("  scores_B.png salvato")
 
 
-# ── 2. Utility comparison bar chart ─────────────────────────────
 def plot_utility(results_real):
     methods = ["B", "C", "D"]
     utils   = [results_real[m] for m in methods]
@@ -103,7 +88,6 @@ def plot_utility(results_real):
     print("  utility.png salvato")
 
 
-# ── 3. Trade-off scatter ─────────────────────────────────────────
 def plot_tradeoff(kept_counts, utils_real):
     fig, ax = plt.subplots(figsize=(7, 4))
 
@@ -126,7 +110,6 @@ def plot_tradeoff(kept_counts, utils_real):
     print("  tradeoff.png salvato")
 
 
-# ── 4. Runtime bar chart ─────────────────────────────────────────
 def plot_runtime(times_real):
     methods = ["B", "C", "D"]
     times   = [times_real[m] for m in methods]
@@ -150,7 +133,6 @@ def plot_runtime(times_real):
     print("  runtime.png salvato")
 
 
-# ── 5. Synthetic dataset: utility + Shapley bar (side by side) ──
 def plot_synthetic():
     synth_data = {
         "A": {"utility": 0.6848, "time": 0.001, "kept": 5},
@@ -163,7 +145,6 @@ def plot_synthetic():
 
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 4))
 
-    # — utility bar —
     methods = ["A", "B", "C", "D"]
     utils   = [synth_data[m]["utility"] for m in methods]
     cols    = [CA, CB, CG, CR]
@@ -178,7 +159,6 @@ def plot_synthetic():
     ax1.set_title("Utility — synthetic dataset ($N=8$, $B=4$)")
     ax1.grid(axis="x", alpha=0)
 
-    # — Shapley values bar —
     photos_ids = list(shapley.keys())
     phi_vals   = list(shapley.values())
     bar_colors = [CR if v == max(phi_vals) else "#aaaaaa" for v in phi_vals]
@@ -195,7 +175,6 @@ def plot_synthetic():
     print("  synthetic_combined.png salvato")
 
 
-# ── main ─────────────────────────────────────────────────────────
 if __name__ == "__main__":
     import time as _time
     print("Caricamento dati reali ...")
@@ -219,7 +198,6 @@ if __name__ == "__main__":
     t0 = _time.time(); u_b = compute_utility(set(kept_b), queries, sim); tb = _time.time()-t0
     t0 = _time.time(); u_d = compute_utility(set(kept_d), queries, sim); td = _time.time()-t0
 
-    # C: closed-form Shapley
     from algorithms.shapley import _closed_form
     t0 = _time.time()
     phi = _closed_form(photos, queries)
