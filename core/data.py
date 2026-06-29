@@ -5,10 +5,6 @@ _DEFAULT_DATA_DIR = Path(__file__).parent.parent / "data"
 
 
 def read_photo_matrix(filepath=None) -> np.ndarray:
-    """
-    Legge photos.csv e restituisce una matrice numpy (N, D).
-    Indice 0 = foto con id 1.
-    """
     path = Path(filepath) if filepath else _DEFAULT_DATA_DIR / "photos.csv"
     rows = []
     with open(path) as f:
@@ -22,9 +18,6 @@ def read_photo_matrix(filepath=None) -> np.ndarray:
 
 
 def read_query_log(filepath=None) -> list:
-    """
-    Legge queries.csv e restituisce una lista di liste di int (id 1-indexed).
-    """
     path = Path(filepath) if filepath else _DEFAULT_DATA_DIR / "queries.csv"
     log = []
     with open(path) as f:
@@ -38,7 +31,6 @@ def read_query_log(filepath=None) -> list:
 
 
 def cosine_matrix(X: np.ndarray) -> np.ndarray:
-    """Matrice NxN di cosine similarity calcolata in modo efficiente."""
     norms = np.linalg.norm(X, axis=1, keepdims=True)
     norms = np.where(norms < 1e-10, 1e-10, norms)
     Xn = X / norms
@@ -48,12 +40,7 @@ def cosine_matrix(X: np.ndarray) -> np.ndarray:
 def compute_utility(kept: set, queries: list,
                     sim: np.ndarray,
                     max_q: int = None) -> float:
-    """
-    Calcola f(D') = media su tutte le query di S(q(D), q(D')).
-    kept   : insieme di indici 0-based delle foto mantenute
-    queries: lista di query (id 1-indexed)
-    sim    : matrice NxN di cosine similarity
-    """
+   
     qs = queries if max_q is None else queries[:max_q]
     if not qs:
         return 0.0
