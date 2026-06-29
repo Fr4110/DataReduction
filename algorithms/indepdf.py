@@ -1,11 +1,5 @@
 """
 algorithms/indepdf.py  —  Method B
--------------------------------------
-IndepDF greedy con Jaccard similarity.
-Assegna ad ogni foto uno score proporzionale alla sua frequenza
-nelle query, pesata per la dimensione inversa del result set.
-
-Riferimento: Rico et al., SIGMOD 2026.
 """
 
 import numpy as np
@@ -13,11 +7,7 @@ from typing import Optional
 
 
 def score_photos(photos: np.ndarray, queries: list) -> np.ndarray:
-    """
-    score(d) = (1/|Q|) * sum_{q: d in q(D)} 1/|q(D)|
 
-    Foto frequenti in query con pochi risultati ricevono score più alto.
-    """
     N = photos.shape[0]
     Q = len(queries)
     scores = np.zeros(N, dtype=np.float64)
@@ -34,17 +24,7 @@ def score_photos(photos: np.ndarray, queries: list) -> np.ndarray:
 
 def run(photos: np.ndarray, queries: list,
         budget: Optional[int] = None) -> dict:
-    """
-    Parameters
-    ----------
-    photos : matrice (N, D)
-    queries: lista di query
-    budget : numero di foto da tenere (default N//2)
-
-    Returns
-    -------
-    dict con 'kept', 'deleted', 'scores', 'budget'
-    """
+   
     N = photos.shape[0]
     if budget is None:
         budget = N // 2
